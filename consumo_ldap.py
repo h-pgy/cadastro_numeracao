@@ -1,5 +1,11 @@
 import requests
 
+LDAP_SERVICE = {
+    'ip' : 'COLOCAR_O_IP',
+    'porta' : 'COLOCAR_A_PORTA'
+}
+
+
 def validar_ad(user, passw, ip_ldap, porta_ldap):
 
     url = f'http://{ip_ldap}:{porta_ldap}/conexao_ldap'

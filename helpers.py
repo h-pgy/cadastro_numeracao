@@ -1,29 +1,18 @@
 import functools
 import json
 import os
-
-import requests
 from flask import session, redirect, url_for
 
 from DAO import *
 from configs import Configs
 from db_models import Users, Files
 
+from consumo_ldap import LDAP_SERVICE, validar_ad as ldap_ad
+
 
 def validar_AD(user, passw):
-    # a linha abaixo pode virar uma função separada depois de construção de URL para GET com PARAM
-    # url = 'http://10.75.16.175:8084/conexao_ldap/?user={user}&passw={passw}'.format(user=user, passw=passw) #pc henriq
-    url = 'http://10.75.19.181:8083/conexao_ldap/?user={user}&passw={passw}'.format(user=user, passw=passw)  # pc leo
 
-    # a linha abaixo pode virar uma função separada depois de resolução de proxy
-    proxies = {'http': 'http://{user}:{passw}@10.10.193.25:3128'.format(user=user, passw=passw),
-               'https': 'https://{user}:{passw}@10.10.193.25:3128'.format(user=user, passw=passw)}
-
-    # with requests.get(url, proxies=proxies) as f:
-    with requests.get(url) as f:
-        json_resp = f.text
-
-    return json.loads(json_resp)
+    return ldap_ad(user, passw, LDAP_SERVICE['ip'], LDAP_SERVICE['porta'])
 
 
 # valida o login do sistema com o login cadastrado no banco de dados na tabela de usuarios
