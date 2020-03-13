@@ -10,7 +10,7 @@ app.register_blueprint(users)
 app.register_blueprint(numeracao)
 app.register_blueprint(files_part)
 app.config.from_pyfile('app_config.py')
-
+app.config.update(SESSION_COOKIE_NAME = 'heisenbug')
 db = SQLAlchemy(app)
 
 from views import *
